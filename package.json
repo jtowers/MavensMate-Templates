@@ -176,6 +176,11 @@
 		            "name"          : "api_name",
 		            "description"   : "Apex Class API Name",
 		            "default" 		: "MyApexClass"
+		        },
+		        {
+		        	"name": "object_name",
+		        	"description": "Name of the object to handle triggers for",
+		        	"default": "Account"
 		        }
 		   ]
 		},
