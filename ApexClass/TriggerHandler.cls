@@ -1,84 +1,131 @@
-public class {{ api_name }} 
-{
+public with sharing class {{api_name}} implements ITrigger {
+    
     /**
-     *   Enum representing each of before/after CRUD events on Sobjects
+     * Map of new {{object_name}} objects where Id is the key and the object is the value
+     * @type map<String, {{object_name}}>
      */
-    public enum Evt 
-    {
-        afterdelete, afterinsert, afterundelete,
-        afterupdate, beforedelete, beforeinsert, beforeupdate   
-    }
-
-    /*
-     *   Simplistic handler to implement on any of the event. It doesn't require or enforces any pattern except the
-     *   method name to be "handle()".
-     */
-    public interface HandlerInterface
-    {
-        void handle();          
-    } 
-
-    // Internal mapping of handlers
-    Map<String, List<HandlerInterface>> eventHandlerMapping = new Map<String, List<HandlerInterface>>();
+    private map<String, {{object_name}}> newMap = new Map<String, {{object_name}}>();
 
     /**
-     *   Core API to bind handlers with events
+     * Map of old {{object_name}} where Id is the key and object is the value
+     * @type map<String, {{object_name}}>
      */
-    public {{ api_name }} bind(Evt event, HandlerInterface eh)
-    {
-        List<HandlerInterface> handlers = eventHandlerMapping.get(event.name());
-        if (handlers == null) 
-        {
-            handlers = new List<HandlerInterface>();
-            eventHandlerMapping.put(event.name(), handlers);
-        }
-        handlers.add(eh);
-        return this;
-    }
-
+    private map<String, {{object_name}}> oldMap = new Map<String, {{object_name}}>();
+    
     /**
-     *   Invokes correct handlers as per the context of Trigger and available registered handlers
+     * Iterates over Trigger.New if it is not null and puts new {{object_name}} objects in the newMap map.
+     * Iterates over Trigger.Old if it is not null and puts {{object_name}} objects in the oldMap map.
      */
-    public void manage()
-    {
-        Evt ev = null;
-        if(Trigger.isInsert && Trigger.isBefore)
-        {
-            ev = Evt.beforeinsert;
+    public void prepareObjects(){
+        if(trigger.new != null){
+            for(sobject SO: trigger.new){
+            {{object_name}} New{{object_name}} = ({{object_name}})SO;
+            newMap.put(New{{object_name}}.id, New{{object_name}});
         }
-        else if(Trigger.isInsert && Trigger.isAfter)
-        {
-            ev = Evt.afterinsert;
-        }
-        else if(Trigger.isUpdate && Trigger.isBefore)
-        {
-            ev = Evt.beforeupdate;
-        }
-        else if(Trigger.isUpdate && Trigger.isAfter)
-        {
-            ev = Evt.afterupdate;
-        }
-        else if(Trigger.isDelete && Trigger.isBefore)
-        {
-            ev = Evt.beforedelete;
-        }
-        else if(Trigger.isDelete && Trigger.isAfter)
-        {
-            ev = Evt.afterdelete;
-        }
-        else if(Trigger.isundelete)
-        {
-            ev = Evt.afterundelete;             
         }
         
-        List<HandlerInterface> handlers = eventHandlerMapping.get(ev.name());
-        
-        if (handlers != null && ! handlers.isEmpty()) 
-        {
-            for (HandlerInterface h : handlers) 
-            {
-                h.handle();
+        if(trigger.old != null){
+            for(sobject SO : Trigger.old){
+                {{object_name}} Old{{object_name}} = ({{object_name}})SO;
+                oldMap.put(Old{{object_name}}.id, Old{{object_name}});
             }
         }
+
+    }
+    
+    
+    /**
+     * Performed before any of the trigger operations are run in a Before trigger.
+     * Used for processing that needs to happen for all objects before the trigger logic begins.
+     */
+    public void bulkBefore(){
+        
+        prepareObjects();
+        
+    }
+    
+    /**
+     * Performed before any of the trigger operations are run in an After trigger.
+     * Used for processing that needs to happen for all objects in an After trigger
+     * @return {[type]} [description]
+     */
+    public void bulkAfter(){
+        
+        prepareObjects();
+          
+        
+    }
+    
+    /**
+     * Logic for a Before Insert trigger
+     * @param   so            {{object_name}} being inserted
+     */
+    public void beforeInsert(SObject so){
+ 
+        {{object_name}} new{{object_name}} = ({{object_name}})SO;
+        
+    }
+    
+    /**
+     * Logic for a Before Update trigger
+     * @param   oldSo         Version of the {{object_name}} before the update was made
+     * @param   so            Version of the {{object_name}} after the update was made
+     */
+    public void beforeUpdate(SObject oldSo, sObject so){
+
+        {{object_name}} updated{{object_name}} = ({{object_name}})SO;
+        
+
+        {{object_name}} old{{object_name}} = ({{object_name}})oldSO;
+        
+        
+
+    }
+    
+    /**
+     * Logic for a Before Delete trigger
+     * @param   so            {{object_name}} being deleted
+     */
+    public void beforeDelete(sObject so){
+        {{object_name}} deleted{{object_name}} = ({{object_name}})SO;
+    }
+    
+    /**
+     * Logic for After Insert trigger
+     * @param   so            {{object_name}} being inserted
+     */
+    public void afterInsert(SObject so){
+            {{object_name}} new{{object_name}} = ({{object_name}})SO;
+        
+
+    }
+    
+    /**
+     * Logic for an After Update trigger
+     * @param  oldSo         Version of the {{object_name}} before it was modified
+     * @param   so            Updated version of {{object_name}}
+     */
+    public void afterUpdate(SObject oldSo, SObject so){
+        
+        {{object_name}} new{{object_name}} = ({{object_name}})SO;
+        
+       
+        {{object_name}} old{{object_name}} = ({{object_name}})oldSO;
+
+    }
+    
+    /**
+     * Logic for an After Delete trigger
+     * @param   so            {{object_name}} that was deleted
+     */
+    public void afterDelete(sObject so){
+        {{object_name}} deleted{{object_name}} = ({{object_name}})SO;
+    }
+    
+    /**
+     * Logic that is run after all triggers have been completed
+     */
+    public void andFinally(){
+
     }
 }
