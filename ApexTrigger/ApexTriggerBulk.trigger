@@ -3,6 +3,6 @@ trigger {{ api_name }} on {{ object_name }} (before insert, before update, befor
 	// Creates a new trigger handler for {{object_name}} using the trigger factory
     // See the {{object_name}}Handler class for trigger logic
     
-    TriggerFacotry.createHandler({{object_name.sObjectType}}); 
+    TriggerFactory.createHandler({{object_name.sObjectType}}); 
 
 }
