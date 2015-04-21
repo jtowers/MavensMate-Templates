@@ -1,7 +1,7 @@
 public with sharing class {{api_name}} implements ITrigger {
     
     /**
-     * Map of new {{object_name}} objects where Id is the key and the object is the value
+     * Map of new {{object_name}} objects where Id is the key and the object is the values
      * @type map<String, {{object_name}}>
      */
     private map<String, {{object_name}}> newMap = new Map<String, {{object_name}}>();
