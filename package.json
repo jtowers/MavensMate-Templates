@@ -170,7 +170,7 @@
 			"name"			: "Trigger Handler",
 			"file_name"		: "TriggerHandler.cls",
 			"description" 	: "An Interface that handles Trigger actions",
-			"author" 		: "MavensMate",
+			"author" 		: "jtowers",
 			"params" 		: [ 
 		        {   
 		            "name"          : "api_name",
@@ -318,15 +318,15 @@
 		   ]
 		},
 		{
-			"name" 			: "Apex Trigger - Bulkified",
+			"name" 			: "Apex Trigger - Bulk",
 			"file_name"		: "ApexTriggerBulk.trigger",
 			"description" 	: "Bulk Apex Trigger with all Trigger events",
-			"author" 		: "David Schach @dschach",
+			"author" 		: "jtowers",
 			"params" 		: [ 
 		        {   
 		            "name"          : "api_name",
 		            "description"   : "Apex Trigger API Name",
-		            "default" 		: "MyCoolTrigger"
+		            "default" 		: "OBJECTTrigger"
 		        },
 		        {   
 		            "name"          : "object_name",
